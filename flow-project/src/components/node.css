@@ -1,9 +1,8 @@
-.container{
-  
+.oferta{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
-
-
-
 .content{
     display: flex;
     justify-content: space-between;
@@ -12,9 +11,7 @@
     padding: 0px 8px;
 }
 
-
 .cases{
-    
     padding: 5px;
 }
 
@@ -25,10 +22,21 @@
     color: black;
     background-color: #ffd600;
 }
+
 .caseElse{
     width: 50px;
     height: 40px;
     border-radius: 5px;
     color: black;
     background-color: #ffd600;
+}
+
+.proposta h3{
+    color:#2f94bc;
+    margin:0;
+}
+.proposta p{
+    color:#ffffff;
+    padding: 5px;
+    margin: 0;
 }
