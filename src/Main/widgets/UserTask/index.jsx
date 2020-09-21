@@ -1,11 +1,11 @@
 import React from 'react'
 
-const UserTask = () => (
-  <>
+const UserTask = ({ onClick }) => (
+  <div onClick={() => onClick()}>
     <div className="oferta">
       <h3>Seleciona oferta</h3>
     </div>
-  </>
+  </div>
 )
 
 const UserTaskPanel = () => (

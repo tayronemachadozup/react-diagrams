@@ -9,49 +9,62 @@ function App() {
   const [selectedWidget, toggleSelectedWidget] = useState(null)
   const [name, setName] = useState("")
 
+  const getWidgetById = widgetId => widgets.find(({ id }) => id === widgetId)
+
   const onLoad = (ReactFlowInstance) => {
     ReactFlowInstance.fitView()
   }
 
-  const addNode = () => {
-    setElements(e => e.concat({
-      id: (e.length + 1).toString(),
-      data: { label: `${name}` },
-      position: { x: Math.random() * window.innerWidth, y: Math.random() * window.innerHeight }
-    }))
+  const handleWidgetClick = (widgetId) => {
+    toggleSelectedWidget(getWidgetById(widgetId))
   }
+
+  const handlePanelChange = data => {
+
+    toggleSelectedWidget(element => ({ ...element, data }))
+  }
+
+  const addNode = (widgetId, widget, x, y) => setElements(elements => [
+    ...elements,
+    {
+      id: `${widget.id}${elements.length + 1}`,
+      data: { label: widget.widget(widget.data, () => handleWidgetClick(widgetId)) },
+      position: { x, y }
+    }
+  ])
 
   const onConnect = (params) => setElements(e => addEdge(params, e))
 
   return (
     <Styled.Wrapper>
+
+
       <Sidebar>
-        {widgets.map(widget => (
-          <div
-            key={widget.id}
-            color={widget.color}
-            draggable={true}
-            onDragStart={(event) => {
-              event.dataTransfer.setData('tayronin-do-arrasta', widget.id);
-            }}
-          >
-            {widget.name}
-          </div>
-        ))}
+        {selectedWidget ? (
+          <>
+            {selectedWidget.panel(selectedWidget?.data, (data) => handlePanelChange(data))}
+          </>
+        ) : (
+            <>
+              {widgets.map(widget => (
+                <div
+                  key={widget.id}
+                  color={widget.color}
+                  draggable={true}
+                  onDragStart={(event) => {
+                    event.dataTransfer.setData('tayronin-do-arrasta', widget.id);
+                  }}
+                >
+                  {widget.name}
+                </div>
+              ))}
+            </>
+          )}
       </Sidebar>
       <div
         onDrop={(event) => {
           const widgetId = event.dataTransfer.getData('tayronin-do-arrasta');
-          const currentWidget = widgets.find(({ id }) => id === widgetId)
-
-          setElements(elements => [
-            ...elements,
-            {
-              id: `${currentWidget.id}${elements.length + 1}`,
-              data: { label: currentWidget.widget() },
-              position: { x: event.clientX, y: event.clientY }
-            }
-          ])
+          addNode(widgetId, getWidgetById(widgetId), event.clientX, event.clientY)
         }}
         onDragOver={event => event.preventDefault()}
       >
@@ -64,7 +77,7 @@ function App() {
           snapToGrid={true}
           snapGrid={[16, 16]}
           style={{ width: '100%', height: '100vh', background: '#1c1c1e' }}
-          onElementClick={event => console.log(event.target)}
+          onPaneClick={() => toggleSelectedWidget(null)}
         >
           <Background gap={16} />
           <MiniMap
@@ -76,7 +89,7 @@ function App() {
           <Controls />
         </ReactFlow>
       </div>
-    </Styled.Wrapper>
+    </Styled.Wrapper >
   );
 }
 

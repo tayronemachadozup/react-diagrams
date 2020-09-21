@@ -1,14 +1,16 @@
-import React, { useState } from 'react'
+import React, { createContext, useContext, useEffect, useImperativeHandle, useReducer, useState } from 'react'
 import { Handle } from 'react-flow-renderer'
 
-const Conditional = ({ data }) => {
-  const [isPanelOpen, togglePanel] = useState(false)
+const Conditional = ({ data, onClick }) => {
+  const [title, setTitle] = useState()
+
+  useImperativeHandle()
 
   return (
-    <>
+    <div onClick={() => onClick()}>
       <h3>Financiamento sem risco</h3>
       <div className="content">
-        <p>data</p>
+        <p>{title}</p>
         <div className="cases">
           <div className="caseIf">
             <h4>If</h4>
@@ -20,17 +22,21 @@ const Conditional = ({ data }) => {
       </div>
       <Handle type="source" position="right" id="a" style={{ top: 90, background: '#000' }} />
       <Handle type="source" position="right" id="b" style={{ bottom: 15, top: 'auto', background: '#000' }} />
-    </>
+    </div>
   )
 }
 
-const ConditionalPanel = () => {
-  const [oua, setOua] = useState('')
+const ConditionalPanel = ({ data, onChange }) => {
+  const [title, setTitle] = useState(data?.title)
+
+  useEffect(() => {
+
+  }, [title])
 
   return (
     <>
       Condition Panel
-      <input type="text" onChange={event => setOua(event.target.event)} value={oua} />
+      <input type="text" onChange={event => setTitle(event.target.value)} value={title} />
     </>
   )
 

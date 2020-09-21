@@ -8,15 +8,19 @@ export const widgets = [
     name: "User Task",
     color: "red",
     icon: "",
-    widget: () => <UserTask />,
-    panel: () => <UserTask.Panel />
+    widget: (data, onClick) => <UserTask data={data} onClick={onClick} />,
+    panel: (data, onChange) => <UserTask.Panel data={data} onChange={onChange} />,
+    data: {}
   },
   {
     id: "conditional",
     name: "Conditional",
     color: "yellow",
     icon: "",
-    widget: () => <Conditional />,
-    panel: () => <Conditional.Panel />
+    widget: (data, onClick) => <Conditional data={data} onClick={onClick} />,
+    panel: (data, onChange) => <Conditional.Panel data={data} onChange={onChange} />,
+    data: {
+      title: ""
+    }
   }
 ]
